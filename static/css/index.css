@@ -1,0 +1,11 @@
+#header img{
+    width: 70px;
+}
+
+#footer{
+    background: linear-gradient(90deg, rgb(190, 190, 190), rgb(212, 209, 204) 25%, rgb(252, 252, 252));
+}
+
+#footer a {
+    color: black;
+}
