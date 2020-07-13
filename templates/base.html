@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    {% block head_content %}{% endblock %}
-
+    {% block head_content %}
+    {% endblock %}
 
     {% load static %}
 
@@ -26,40 +26,17 @@
     <!-- header -->
 
 
-    <h1>Aqui van los retiros</h1>
+    <h1>Bienvenido al Banco de Zacatecas</h1>
 
-    <div class="form-group">
-        <input class="form-control" type="text" placeholder="Username" name="username" />
-    </div>
+    {% block container %}
+    {% endblock %}
 
-    <div class="form-group">
-        <input class="form-control" type="password" placeholder="Password" name="password" />
-    </div>
-
-    <div class="form-group">
-        <input class="form-control" type="password" placeholder="Password" name="password" />
-    </div>
 
 
     <!-- footer --> 
     <footer id="footer">
-        <div class="container">
-          <div class="row pb-4 pt-4 text-center">
-            <div class="col col-12 col-lg">
-              <a href="#">Sobre BanZac</a>
-            </div>
-            <div class="col col-12 col-lg">
-              <a href="#">Contacto</a>
-            </div>
-            <div class="col col-12 col-lg">
-              <a href="#">Política de Privacidad</a>
-            </div>
-            <div class="col col-12 col-lg">
-              <a href="#">Términos de Servicio</a>
-            </div>
-          </div>      
-        </div> 
-      </footer>
+        {% include "footer.html" %}
+    </footer>
     <!-- footer  --> 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

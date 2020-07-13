@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>BanZac Retiros</title>
+{% endblock %}
+
+{% block container %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif%}
+
+    <h2>¿Qué monto desea retirar?</h2>
+
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Retiro" name="retiro" />
+        </div>
+
+        <button class="btn btn-danger btn-block mt-5" type="submit">Realizar</button>
+
+{% endblock %}

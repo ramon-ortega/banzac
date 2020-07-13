@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>BanZac Depositos</title>
+{% endblock %}
+
+{% block container %}
+
+    <h2>¿Qué monto desea depositar?</h2>
+
+    <form method="POST" action="{% url "deposito" %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Deposito" name="deposito" />
+        </div>
+
+        <button class="btn btn-danger btn-block mt-5" type="submit">Depositar</button>
+
+    </form>
+
+{% endblock %}

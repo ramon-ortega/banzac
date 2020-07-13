@@ -19,11 +19,6 @@ def login_view(request):
 
     return render(request, 'users/login.html')
 
-
-@login_required
-def cajero(request):
-    return render(request, 'base.html')
-
 @login_required
 def logout_view(request):
     """Logout users"""
