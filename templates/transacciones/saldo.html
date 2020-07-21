@@ -6,12 +6,10 @@
 
 {% block container %}
     <h2>Consultar Saldo</h2>
+    <h3> Bienvenido {{ request.user.username }}</h3>
 
     <p>El saldo que tienes actualmente es de: </p>
 
-        {{ transacciones.saldo }}
-
-        0
-
+    {{ saldo }}
 
 {% endblock %}
