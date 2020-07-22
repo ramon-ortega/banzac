@@ -50,9 +50,13 @@ def signup(request):
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
+        user.save()
 
         profile = Profile(user=user)
         profile.save()
+
+        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = request.user.id, user_id = request.user.id)
+        transaccion.save()
 
         return redirect('login')
 

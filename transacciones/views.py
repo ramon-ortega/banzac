@@ -76,27 +76,3 @@ def deposito(request):
 def cajero(request):
     return render(request, 'transacciones/base.html')
 
-def signup(request):
-    """Signup user."""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirmation = request.POST['password_confirmation']
-
-        if password != password_confirmation:
-            return render(request, 'users/signup.html', {'error': 'Passwords do not match'})
-        
-        try:
-            user = User.objects.create_user(username=username, password=password)
-        except 	IntegrityError:
-            return render(request, 'users/signup.html', {'error': 'User already exists'})
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-
-        profile = Profile(user=user)
-        profile.save()
-
-        return redirect('login')
-
-    return render(request, 'users/signup.html')
