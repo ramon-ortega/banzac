@@ -30,6 +30,7 @@ def solicitar_saldo(request):
 @login_required
 def retiro(request):
     """ Agregamos Retiro """
+    user = User.objects.get(id = request.user.id)
 
     x = Transaccion.objects.filter(profile_id = request.user.id)
     numero_deposito = len(x)
@@ -38,9 +39,15 @@ def retiro(request):
 
     if request.method == 'POST':
         retiro = float(request.POST['retiro'])
-        saldo = saldo - retiro
+        if saldo - retiro >= 0:
+            saldo = saldo - retiro
+            
+            transaccion = Transaccion(saldo=saldo, transferencia=retiro, retiro=0, profile_id = user.id, user_id = user.id)
+            transaccion.save()
 
-    import pdb; pdb.set_trace()
+        else:
+            saldo = saldo
+            return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
 
 
     return render(request, 'transacciones/retiro.html')
@@ -48,6 +55,8 @@ def retiro(request):
 @login_required
 def deposito(request):
     """Agregamos deposito""" 
+    user = User.objects.get(id = request.user.id)
+
     x = Transaccion.objects.filter(profile_id = request.user.id)
     numero_deposito = len(x)
 
