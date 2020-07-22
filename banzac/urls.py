@@ -11,6 +11,7 @@ urlpatterns = [
 
     path('users/login/', user_views.login_view, name="login"),
     path('users/logout/', user_views.logout_view, name="logout"),
+    path('users/signup/', user_views.signup, name="signup"),
 
     path('inicio/', transacciones_views.cajero, name="feed"),
     path('transacciones/deposito/', transacciones_views.deposito, name="deposito"),
