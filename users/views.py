@@ -55,7 +55,7 @@ def signup(request):
         profile = Profile(user=user)
         profile.save()
 
-        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = request.user.id, user_id = request.user.id)
+        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = profile.id, user_id = user.id)
         transaccion.save()
 
         return redirect('login')
