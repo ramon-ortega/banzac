@@ -12,35 +12,17 @@ from django.contrib.auth.models import User
 def solicitar_saldo(request):
     """Return saldo"""
     user = User.objects.get(id = request.user.id)
+    x = Transaccion.objects.filter(profile_id = request.user.id)
+    numero_deposito = len(x)
 
-    try:
-        
-        x = Transaccion.objects.filter(profile_id = request.user.id)
-        numero_deposito = len(x)
-
-        saldo_transaccion = Transaccion.objects.get(id = numero_deposito)
-        saldo = saldo_transaccion.saldo
-
-        import pdb; pdb.set_trace()
-
-    except:
-        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = user.id, user_id = user.id)
-        transaccion.save()
-
-        return render(
-        request = request,
-        template_name = 'transacciones/saldo.html',
-        context = {
-            'saldo': saldo
-        }
-    )
-
+    saldo_transaccion = Transaccion.objects.filter(profile_id = user.id).latest('created')
+    saldo = saldo_transaccion.saldo    
 
     return render(
         request = request,
         template_name = 'transacciones/saldo.html',
         context = {
-            'saldo': saldo
+            'saldo': saldo,
         }
     )
 
@@ -49,27 +31,22 @@ def retiro(request):
     """ Agregamos Retiro """
     user = User.objects.get(id = request.user.id)
 
-    try:
-        x = Transaccion.objects.filter(profile_id = request.user.id)
-        numero_deposito = len(x)
-        saldo_transaccion = Transaccion.objects.get(id = numero_deposito)
-        saldo = saldo_transaccion.saldo
+    x = Transaccion.objects.filter(profile_id = request.user.id)
+    numero_deposito = len(x)
+    saldo_transaccion = Transaccion.objects.filter(profile_id = user.id).latest('created')
+    saldo = saldo_transaccion.saldo
 
-        if request.method == 'POST':
-            retiro = float(request.POST['retiro'])
-            if saldo - retiro >= 0:
-                saldo = saldo - retiro
+    if request.method == 'POST':
+        retiro = float(request.POST['retiro'])
+        if saldo - retiro >= 0:
+            saldo = saldo - retiro
             
-                transaccion = Transaccion(saldo=saldo, transferencia=0, retiro=retiro, profile_id = user.id, user_id = user.id)
-                transaccion.save()
+            transaccion = Transaccion(saldo=saldo, transferencia=0, retiro=retiro, profile_id = user.id, user_id = user.id)
+            transaccion.save()
 
-            else:
-                saldo = saldo
-                return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
-    except transacciones.models.Transaccion.DoesNotExist:
-        transaccion = Transaccion(saldo=0, transferencia=0, retiro=retiro, profile_id = user.id, user_id = user.id)
-        transaccion.save()
-
+        else:
+            saldo = saldo
+            return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
 
     return render(request, 'transacciones/retiro.html')
 
@@ -80,8 +57,7 @@ def deposito(request):
 
     x = Transaccion.objects.filter(profile_id = request.user.id)
     numero_deposito = len(x)
-
-    saldo_transaccion = Transaccion.objects.get(id = numero_deposito)
+    saldo_transaccion = Transaccion.objects.filter(profile_id = user.id).latest('created')
     saldo = saldo_transaccion.saldo
     if request.method == 'POST':
         deposito = float(request.POST['deposito'])
