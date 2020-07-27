@@ -62,5 +62,21 @@ def signup(request):
 
     return render(request, 'users/signup.html')
 
-def redirect_root(request):
-    redirect('login')
+def update_profile(request):
+    """Update a user's profile view."""
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+
+        user = request.user
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.save()
+
+        profile = Profile(user=user)
+        profile.save()
+
+        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = profile.id, user_id = user.id)
+        transaccion.save()
+
+    return render(request, 'users/update_profile.html')
