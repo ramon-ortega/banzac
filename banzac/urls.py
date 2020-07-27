@@ -9,6 +9,8 @@ from transacciones import views as transacciones_views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('', user_views.login_view, name='home'),
+
     path('users/login/', user_views.login_view, name="login"),
     path('users/logout/', user_views.logout_view, name="logout"),
     path('users/signup/', user_views.signup, name="signup"),

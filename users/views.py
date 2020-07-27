@@ -61,3 +61,6 @@ def signup(request):
         return redirect('login')
 
     return render(request, 'users/signup.html')
+
+def redirect_root(request):
+    redirect('login')
