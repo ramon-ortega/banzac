@@ -1,7 +1,7 @@
 {% extends "users/base.html" %}
 
 {% block head_content %}
-<title>Platzigram sign in</title>
+<title>BanZac Sign In</title>
 {% endblock%}
 
 {% block container %}
@@ -20,8 +20,13 @@
             <input class="form-control" type="password" placeholder="Password" name="password" />
         </div>
 
+        <button class="btn btn-danger btn-block mt-3 mb-3" type="submit">
+            Sign in!
+        </button>
 
-        <button class="btn btn-danger btn-block mt-5" type="submit">Sign in!</button>
+        <button class="btn btn-danger btn-block" type="submit">
+            <a href="{% url "signup" %}" style="color: white">Comienza Ahora!</a>
+        </button>
 
     </form>
 {% endblock %}
