@@ -55,7 +55,7 @@ def signup(request):
         profile = Profile(user=user)
         profile.save()
 
-        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = profile.id, user_id = user.id)
+        transaccion = Transaccion(transferencia=0, retiro=0, user_id = user.id)
         transaccion.save()
 
         return redirect('login')
@@ -76,7 +76,7 @@ def update_profile(request):
         profile = Profile(user=user)
         profile.save()
 
-        transaccion = Transaccion(saldo=0, transferencia=0, retiro=0, profile_id = profile.id, user_id = user.id)
+        transaccion = Transaccion(transferencia=0, retiro=0, user_id = user.id)
         transaccion.save()
 
     return render(request, 'users/update_profile.html')

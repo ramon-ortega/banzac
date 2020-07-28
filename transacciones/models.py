@@ -9,9 +9,7 @@ class Transaccion(models.Model):
     """Transaccion models."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    profile = models.ForeignKey('users.Profile', on_delete=models.CASCADE)
 
-    saldo = models.FloatField(default=0)
     transferencia = models.FloatField(null = True)
     retiro = models.FloatField(null=True)
 

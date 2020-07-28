@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 def solicitar_saldo(request):
     """Return saldo"""
 
-    saldo_transaccion = Transaccion.objects.filter(profile_id = request.user.profile.id).latest('created')
+    saldo_transaccion = Profile.objects.filter(id = request.user.profile.id).latest('created')
     saldo = saldo_transaccion.saldo
 
     return render(
@@ -30,7 +30,7 @@ def solicitar_saldo(request):
 @login_required
 def retiro(request):
     """ Agregamos Retiro """
-    saldo_transaccion = Transaccion.objects.filter(profile_id = request.user.profile.id).latest('created')
+    saldo_transaccion = Profile.objects.filter(id = request.user.profile.id).latest('created')
     saldo = saldo_transaccion.saldo
 
     if request.method == 'POST':
@@ -38,8 +38,15 @@ def retiro(request):
         if saldo - retiro >= 0:
             saldo = saldo - retiro
             
-            transaccion = Transaccion(saldo=saldo, transferencia=0, retiro=retiro, profile_id = request.user.profile.id, user_id = request.user.id)
+            transaccion = Transaccion(transferencia=0, retiro=retiro, user_id = request.user.id)
             transaccion.save()
+
+            profile = Profile.objects.get(user = request.user)
+            profile.saldo = saldo
+            profile.save()
+
+            import pdb; pdb.set_trace()
+
         else:
             saldo = saldo
             return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
@@ -50,15 +57,19 @@ def retiro(request):
 def deposito(request):
     """Agregamos deposito""" 
 
-    saldo_transaccion = Transaccion.objects.filter(profile_id = request.user.profile.id).latest('created')
+    saldo_transaccion = Profile.objects.filter(id = request.user.profile.id).latest('created')
     saldo = saldo_transaccion.saldo
 
     if request.method == 'POST':
         deposito = float(request.POST['deposito'])
         saldo = saldo + deposito
 
-        transaccion = Transaccion(saldo=saldo, transferencia=deposito, retiro=0, profile_id = request.user.profile.id, user_id = request.user.id)
+        transaccion = Transaccion(transferencia=deposito, retiro=0, user_id = request.user.id)
         transaccion.save()
+
+        profile = Profile.objects.get(user = request.user)
+        profile.saldo = saldo
+        profile.save()
 
     return render(request, 'transacciones/deposito.html')
 
