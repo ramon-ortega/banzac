@@ -45,8 +45,6 @@ def retiro(request):
             profile.saldo = saldo
             profile.save()
 
-            import pdb; pdb.set_trace()
-
         else:
             saldo = saldo
             return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
