@@ -86,8 +86,6 @@ def update_profile(request):
         except IntegrityError:
             render(request, 'users/update_profile.html', {'error': 'Data is the same'})
 
-        import pdb; pdb.set_trace()
-
     return render(
         request=request,
         template_name='users/update_profile.html',
