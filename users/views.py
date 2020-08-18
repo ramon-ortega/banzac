@@ -65,28 +65,37 @@ def signup(request):
 
     return render(request, 'users/signup.html')
 
+@login_required
 def update_profile(request):
     """Update a user's profile view."""
+    user = request.user
+    profile = Profile(user=user)
+
     if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
 
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.save()
 
-        user = request.user
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.save()
+            try:
+                profile.save()
+                transaccion = Transaccion(transferencia=0, retiro=0, user_id = user.id)
+                transaccion.save()
+            except IntegrityError:
+                render(request, 'users/update_profile.html', {'error': 'Data is the same'})
 
-        try:
-            profile = Profile(user=user)
-            profile.save()
-
-            transaccion = Transaccion(transferencia=0, retiro=0, user_id = user.id)
-            transaccion.save()
-        except IntegrityError:
-            render(request, 'users/update_profile.html', {'error': 'Data is the same'})
+    else: 
+        form = ProfileForm()
 
     return render(
         request=request,
         template_name='users/update_profile.html',
-        )
+        context={
+            'profile': profile,
+            'user': user,
+            'form': form
+        }
+    )

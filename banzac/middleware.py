@@ -18,10 +18,9 @@ class ProfileCompletionMiddleware:
         is called."""
         
         if not request.user.is_anonymous:
-            if not request.user.is_staff:
-                user = request.user
-                if not user.first_name or not user.last_name:
-                    if request.path not in [reverse('update_profile'), reverse('logout')]:
-                        return redirect('update_profile')
+            user = request.user
+            if not user.first_name or not user.last_name:
+                if request.path not in [reverse('update_profile'), reverse('logout')]:
+                    return redirect('update_profile')
         response = self.get_response(request)
         return response
