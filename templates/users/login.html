@@ -12,12 +12,35 @@
     <form method="POST" action="{% url "users:login" %}">
         {% csrf_token %}
 
+        {# Username Field #}
         <div class="form-group">
-            <input class="form-control" type="text" placeholder="Username" name="username" />
+            <input 
+                class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                type="text" 
+                placeholder="Username" 
+                name="username" 
+                value="{% if form.errors %}{{ form.username.value }}{% else %}{{ user.username }}{% endif %}"
+                />
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
         </div>
 
         <div class="form-group">
-            <input class="form-control" type="password" placeholder="Password" name="password" />
+            <input 
+                class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
+                type="password" 
+                placeholder="Password" 
+                name="password" 
+                value="{% if form.errors %}{{ form.password.value }}{% else %}{{ user.password }}{% endif %}"
+                />
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
         </div>
 
         <button class="btn btn-danger btn-block mt-3 mb-3" type="submit">

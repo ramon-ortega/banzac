@@ -67,3 +67,9 @@ class SignupForm(forms.Form):
         profile.save()
         transaccion = Transaccion(transferencia=0, retiro=0, user_id = user.id)
         transaccion.save()
+
+class LoginForm(forms.Form):
+    """Login Form"""
+
+    username = forms.CharField(min_length=4, max_length=50, required=True)
+    password = forms.CharField(min_length=8, max_length=80, required=True)

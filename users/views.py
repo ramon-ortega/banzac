@@ -16,21 +16,52 @@ from users.models import Profile
 from django.contrib.auth.models import User
 
 # Forms
-from users.forms import ProfileForm, SignupForm
+from users.forms import ProfileForm, SignupForm, LoginForm
+
+""" class LoginView(View):
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+
+                return redirect('transacciones:feed')
+            else:
+                return render(request, 'users/login.html', {'error': 'Invalid username and password'})
+        else:
+            return render(request, 'users/login.html')
+
+        return render(request, 'users/login.html')"""
 
 def login_view(request):
     """Login view."""
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('transacciones:feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            print(data)
 
-    return render(request, 'users/login.html')
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('transacciones:feed')
+            else:
+                return render(request, 'users/login.html', {'error': 'Invalid username and password'})
+
+    else:
+        form = LoginForm()
+
+    return render(
+        request = request,
+        template_name = 'users/login.html',
+        context = {
+            'form': form
+        }
+    )
 
 class LogoutView(View):
     """Logout View."""
