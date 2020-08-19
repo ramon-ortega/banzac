@@ -4,6 +4,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -68,7 +69,7 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
-        return redirect('login')
+        return redirect('users:login')
 
 def signup(request):
     """Signup user."""
