@@ -17,15 +17,17 @@ class ProfileForm(forms.Form):
 class SignupForm(forms.Form):
     """Sign up form."""
 
-    username = forms.CharField(min_length=4, max_length=50)
+    username = forms.CharField(min_length=4, max_length=50, required=True)
 
     password = forms.CharField(
         max_length=70,
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(),
+        required=True
     )
     password_confirmation = forms.CharField(
         max_length=70,
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(),
+        required=True
     )
 
     first_name = forms.CharField(min_length=2, max_length=50)
@@ -34,7 +36,8 @@ class SignupForm(forms.Form):
     email = forms.CharField(
         min_length=6,
         max_length=70,
-        widget=forms.EmailInput()
+        widget=forms.EmailInput(),
+        required=True
     )
 
     def clean_username(self):
@@ -72,4 +75,4 @@ class LoginForm(forms.Form):
     """Login Form"""
 
     username = forms.CharField(min_length=4, max_length=50, required=True)
-    password = forms.CharField(min_length=8, max_length=80, required=True)
+    password = forms.CharField(max_length=70, required=True)

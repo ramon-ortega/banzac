@@ -17,10 +17,10 @@
         <div class="form-group">
             <input 
                 type="text" 
-                class="form-control" 
+                class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
                 placeholder="Username" 
                 name="username" 
-                required="true" 
+                value="{% if form.errors %}{{ form.username.value }}{% else %}{{ user.username }}{% endif %}"
             />
         </div>
 
@@ -28,10 +28,9 @@
         <div class="form-group">
             <input 
                 type="password" 
-                class="form-control" 
+                class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
                 placeholder="Password" 
                 name="password" 
-                required="true" 
             />
         </div>
 
@@ -39,10 +38,9 @@
         <div class="form-group">
             <input 
                 type="password" 
-                class="form-control" 
+                class="form-control {% if form.password_confirmation.errors %}is-invalid{% endif %}" 
                 placeholder="Password Confirmation" 
                 name="password_confirmation" 
-                required="true" 
             />
         </div>
 
@@ -50,10 +48,10 @@
         <div class="form-group">
             <input 
                 type="text" 
-                class="form-control" 
+                class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
                 placeholder="First name" 
                 name="first_name" 
-                required="true" 
+                value="{% if form.errors %}{{ form.first_name.value }}{% else %}{{ user.first_name }}{% endif %}"
             />
         </div>
 
@@ -61,10 +59,10 @@
         <div class="form-group">
             <input 
                 type="text" 
-                class="form-control" 
+                class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
                 placeholder="Last name" 
                 name="last_name" 
-                required="true" 
+                value="{% if form.errors %}{{ form.last_name.value }}{% else %}{{ user.last_name }}{% endif %}"
             />
         </div>
 
@@ -72,10 +70,10 @@
         <div class="form-group">
             <input 
                 type="email" 
-                class="form-control" 
+                class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
                 placeholder="Email" 
                 name="email" 
-                required="true" 
+                value="{% if form.errors %}{{ form.email.value }}{% else %}{{ user.email }}{% endif %}"
             />
         </div>
 
