@@ -4,6 +4,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Error
 from django.db.utils import IntegrityError
@@ -30,11 +32,12 @@ def login_view(request):
 
     return render(request, 'users/login.html')
 
-@login_required
-def logout_view(request):
-    """Logout users"""
-    logout(request)
-    return redirect('users:login')
+class LogoutView(View):
+    """Logout View."""
+
+    def get(self, request):
+        logout(request)
+        return redirect('login')
 
 def signup(request):
     """Signup user."""
