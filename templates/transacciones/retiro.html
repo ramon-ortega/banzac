@@ -11,7 +11,7 @@
 
     <h2>¿Qué monto desea retirar?</h2>
 
-    <form method="POST" action="{% url "retiro" %}">
+    <form method="POST" action="{% url "transacciones:retiro" %}">
         {% csrf_token %}
 
         <div class="form-group">

@@ -8,7 +8,7 @@
 
     <h2>¿Qué monto desea depositar?</h2>
 
-    <form method="POST" action="{% url "deposito" %}">
+    <form method="POST" action="{% url "transacciones:deposito" %}">
         {% csrf_token %}
 
         <div class="form-group">
