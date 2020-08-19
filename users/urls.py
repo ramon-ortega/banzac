@@ -2,13 +2,16 @@
 
 #Django 
 from django.urls import path
-from django.views.generic import TemplateView
 
 # View
 from users import views
 
 urlpatterns = [
-
+    path(
+        route = 'login/', 
+        view = views.login_view, 
+        name="login"
+        ),
 
     path(
         route = 'logout/',

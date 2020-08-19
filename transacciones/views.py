@@ -1,11 +1,9 @@
 """Transacciones views."""
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-
-# Utilities
-from django.db.utils import IntegrityError
+from django.views.generic import TemplateView
 
 # Models 
 from transacciones.models import Transaccion
@@ -71,7 +69,8 @@ def deposito(request):
 
     return render(request, 'transacciones/deposito.html')
 
-@login_required
-def cajero(request):
-    return render(request, 'transacciones/base.html')
+class CajeroPrincipal(LoginRequiredMixin, TemplateView):
+    """Cajero Principal View"""
+
+    template_name = 'transacciones/base.html'
 

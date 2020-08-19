@@ -2,7 +2,6 @@
 
 #Django 
 from django.urls import path
-from django.views.generic import TemplateView
 
 # View
 from transacciones import views
@@ -10,7 +9,7 @@ from transacciones import views
 urlpatterns = [
     path(
         route = '',
-        view = views.cajero,
+        view = views.CajeroPrincipal.as_view(),
         name = 'feed'
         ),
 
