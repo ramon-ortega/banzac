@@ -4,9 +4,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth import views as auth_views
-from django.views.generic import View
+from django.views.generic import View, FormView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Error
@@ -30,21 +30,17 @@ class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
 
     template_name = 'users/login.html'
 
-def signup(request):
-    """Signup user."""
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('users:login')
-    else:
-        form = SignupForm()
+class SignupView(FormView):
+    """Users sign up view."""
 
-    return render(
-        request=request,
-        template_name='users/signup.html',
-        context={'form': form}
-    )
+    template_name = 'users/signup.html'
+    form_class = SignupForm
+    success_url = reverse_lazy('users:login')
+
+    def form_valid(self, form):
+        """Save form data."""
+        form.save()
+        return super().form_valid(form)
 
 @login_required
 def update_profile(request):
