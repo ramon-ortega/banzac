@@ -5,11 +5,20 @@
 {% endblock %}
 
 {% block container %}
-    <h2>Consultar Saldo</h2>
-    <h3> Bienvenido {{ request.user.username }}</h3>
 
-    <p>El saldo que tienes actualmente es de: </p>
+<div class="row justify-content-md-center">
+    <div class="col-6 p-4" id="profile-box">
 
-    {{ request.user.profile.saldo }}
+        <h3 style="margin-bottom: 40px;"> Bienvenido {{ request.user.username }}</h3>
+
+        <p style="margin-bottom: 50px;">El saldo que tienes actualmente es de: </p>
+
+        <p style="margin-bottom: 190px; text-align: center; font-size: 30px;" >
+            {{ request.user.profile.saldo }}
+        </p>
+
+        
+    </div>
+</div>
 
 {% endblock %}
