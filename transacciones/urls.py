@@ -27,7 +27,7 @@ urlpatterns = [
 
     path(
         route = 'transacciones/consultar_saldo/', 
-        view = views.solicitar_saldo,
+        view = views.SolicitarSaldoView.as_view(),
         name="consultar_saldo"
         ),
 ]

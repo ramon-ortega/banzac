@@ -3,27 +3,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView, ListView
 
 # Models 
 from transacciones.models import Transaccion
 from users.models import Profile
 from django.contrib.auth.models import User
 
-@login_required
-def solicitar_saldo(request):
-    """Return saldo"""
-
-    saldo_transaccion = Profile.objects.filter(id = request.user.profile.id).latest('created')
-    saldo = saldo_transaccion.saldo
-
-    return render(
-        request = request,
-        template_name = 'transacciones/saldo.html',
-        context = {
-            'saldo': saldo,
-        }
-    )
+class SolicitarSaldoView(ListView, LoginRequiredMixin):
+    model = Profile
+    template_name = 'transacciones/saldo.html'
 
 @login_required
 def retiro(request):

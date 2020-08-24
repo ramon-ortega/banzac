@@ -10,6 +10,6 @@
 
     <p>El saldo que tienes actualmente es de: </p>
 
-    {{ saldo }}
+    {{ request.user.profile.saldo }}
 
 {% endblock %}
