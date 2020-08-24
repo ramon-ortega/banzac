@@ -5,21 +5,40 @@
 {% endblock %}
 
 {% block container %}
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif%}
 
-    <h2>¿Qué monto desea retirar?</h2>
+<div class="row justify-content-md-center">
+    <div class="col-6 p-4" id="profile-box">
+        <h2>¿Qué monto desea retirar?</h2>
 
-    <form method="POST" action="{% url "transacciones:retiro" %}">
-        {% csrf_token %}
+        {% if form.errors %}
+            <p class="alert alert-danger">
+                Para retirar es necesario que agregues un monto mayor a 1 peso y que el monto no exceda los 8,000 pesos
+            </p>
+        {% endif%}
 
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Cantidad a retirar" name="retiro" />
-        </div>
+        {% if error %}
+            <p class="alert alert-danger">
+                Saldo insuficiente
+            </p>
+        {% endif%}
 
-        <button class="btn btn-danger btn-block mt-5" type="submit">Retirar</button>
+        <form method="POST" action="{% url "transacciones:retiro" %}">
+            {% csrf_token %}
 
-    </form>
+            <div class="form-group">
+                <input 
+                    class="form-control {% if form.retiro.errors %}is-invalid{% endif %}" 
+                    type="number" 
+                    step="0.01" 
+                    placeholder="Cantidad a retirar" 
+                    name="retiro" 
+                    style="margin-top: 40px;"
+                />
+            </div>
 
+            <button class="btn btn-danger btn-block mt-5" type="submit" style="margin-bottom: 180px;">Retirar</button>
+
+        </form>
+    </div>
+</div>
 {% endblock %}

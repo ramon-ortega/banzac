@@ -3,7 +3,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView, ListView, CreateView
+from django.urls import reverse_lazy
 
 # Models 
 from transacciones.models import Transaccion
@@ -11,7 +12,7 @@ from users.models import Profile
 from django.contrib.auth.models import User
 
 # Forms
-from transacciones.forms import DepositoForm
+from transacciones.forms import DepositoForm, RetiroForm
 
 class SolicitarSaldoView(ListView, LoginRequiredMixin):
     model = Profile
@@ -24,24 +25,35 @@ def retiro(request):
     saldo = saldo_transaccion.saldo
 
     if request.method == 'POST':
-        retiro = float(request.POST['retiro'])
-        if saldo - retiro >= 0:
-            saldo = saldo - retiro
+        form = RetiroForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+
+            retiro = float(request.POST['retiro'])
+            if saldo - retiro >= 0:
+                saldo = saldo - retiro
             
-            transaccion = Transaccion(transferencia=0, retiro=retiro, user_id = request.user.id)
-            transaccion.save()
+                transaccion = Transaccion(transferencia=0, retiro=retiro, user_id = request.user.id)
+                transaccion.save()
 
-            profile = Profile.objects.get(user = request.user)
-            profile.saldo = saldo
-            profile.save()
+                profile = Profile.objects.get(user = request.user)
+                profile.saldo = saldo
+                profile.save()
 
-        else:
-            saldo = saldo
-            return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
+            else:
+                saldo = saldo
+                return render(request, 'transacciones/retiro.html', { 'error': 'Saldo insuficiente' })
 
-    return render(request, 'transacciones/retiro.html')
+    else:
+        form = RetiroForm()
 
-
+    return render(
+        request=request, 
+        template_name = 'transacciones/retiro.html',
+        context = {
+            'form' : form
+        }
+    )
 
 @login_required
 def deposito(request):

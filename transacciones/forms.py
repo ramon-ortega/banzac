@@ -10,4 +10,10 @@ from transacciones.models import Transaccion
 
 class DepositoForm(forms.Form):
     """Deposito Form."""
+    
     deposito = forms.FloatField(min_value = 1, max_value = 15000);
+
+class RetiroForm(forms.Form):
+    """Retiro Form."""
+
+    retiro = forms.FloatField(min_value = 1, max_value=8000);
