@@ -10,6 +10,9 @@ from transacciones.models import Transaccion
 from users.models import Profile
 from django.contrib.auth.models import User
 
+# Forms
+from transacciones.forms import DepositoForm
+
 class SolicitarSaldoView(ListView, LoginRequiredMixin):
     model = Profile
     template_name = 'transacciones/saldo.html'
@@ -38,6 +41,8 @@ def retiro(request):
 
     return render(request, 'transacciones/retiro.html')
 
+
+
 @login_required
 def deposito(request):
     """Agregamos deposito""" 
@@ -46,17 +51,29 @@ def deposito(request):
     saldo = saldo_transaccion.saldo
 
     if request.method == 'POST':
-        deposito = float(request.POST['deposito'])
-        saldo = saldo + deposito
+        form = DepositoForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
 
-        transaccion = Transaccion(transferencia=deposito, retiro=0, user_id = request.user.id)
-        transaccion.save()
+            deposito = float(request.POST['deposito'])
+            saldo = saldo + deposito
 
-        profile = Profile.objects.get(user = request.user)
-        profile.saldo = saldo
-        profile.save()
+            transaccion = Transaccion(transferencia=deposito, retiro=0, user_id = request.user.id)
+            transaccion.save()
 
-    return render(request, 'transacciones/deposito.html')
+            profile = Profile.objects.get(user = request.user)
+            profile.saldo = saldo
+            profile.save()
+    else:
+        form = DepositoForm()
+
+    return render(
+        request=request,
+        template_name='transacciones/deposito.html',
+        context={
+            'form': form
+        }
+    )
 
 class CajeroPrincipal(LoginRequiredMixin, TemplateView):
     """Cajero Principal View"""

@@ -6,17 +6,38 @@
 
 {% block container %}
 
-    <h2>¿Qué monto desea depositar?</h2>
 
-    <form method="POST" action="{% url "transacciones:deposito" %}">
-        {% csrf_token %}
 
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Deposito" name="deposito" />
-        </div>
+<div class="row justify-content-md-center">
+    <div class="col-6 p-4" id="profile-box">
 
-        <button class="btn btn-danger btn-block mt-5" style="margin-bottom: 190px;" type="submit">Depositar</button>
+        <h2>¿Qué monto desea depositar?</h2>
 
-    </form>
+        {% if form.errors %}
+            <p class="alert alert-danger">
+                Para depositar es necesario que agregues un monto mayor a 1 peso y que el monto no exceda los 15,000 pesos
+            </p>
+        {% endif%}
+
+        <form method="POST" action="{% url "transacciones:deposito" %}">
+            {% csrf_token %}
+
+            {# Deposito Field #}
+            <div class="form-group">
+                <input 
+                    class="form-control {% if form.deposito.errors %}is-invalid{% endif %}" 
+                    type="number" 
+                    step="0.01"
+                    placeholder="Deposito" 
+                    name="deposito" 
+                    value="{% if form.errors %}{{ form.deposito.value }}{% endif %}"
+                    style="margin-top: 40px;"
+                />
+            </div>
+
+            <button class="btn btn-danger btn-block mt-5" style="margin-bottom: 180px;" type="submit">Depositar</button>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
