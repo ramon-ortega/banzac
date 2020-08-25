@@ -15,7 +15,7 @@ urlpatterns = [
 
     path(
         route = 'transacciones/deposito/',
-        view = views.deposito,
+        view = views.DepositoView.as_view(),
         name = "deposito"
         ),
 
