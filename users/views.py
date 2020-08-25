@@ -1,12 +1,10 @@
 """Users views."""
 
 # Django
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
-from django.views.generic import View, FormView, UpdateView
+from django.views.generic import View, FormView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Error
@@ -42,14 +40,18 @@ class SignupView(FormView):
         form.save()
         return super().form_valid(form)
 
-@login_required
-def update_profile(request):
-    """Update a user's profile view."""
-    user = request.user
-    profile = Profile(user=user)
+class UpdateProfileView(LoginRequiredMixin, View):
+    form_class = ProfileForm
+    template_name = 'users/update_profile.html'
 
-    if request.method == 'POST':
-        form = ProfileForm(request.POST)
+    def get(self, request, *args, **kwargs):
+        form = ProfileForm()
+        return render(request, 'users/update_profile.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        profile = Profile(user=user)
+        form = self.form_class(request.POST)
         if form.is_valid():
             data = form.cleaned_data
 
@@ -64,15 +66,5 @@ def update_profile(request):
             except IntegrityError:
                 render(request, 'users/update_profile.html', {'error': 'Data is the same'})
 
-    else: 
-        form = ProfileForm()
+        return render(request, 'users/update_profile.html', {'form': form})
 
-    return render(
-        request=request,
-        template_name='users/update_profile.html',
-        context={
-            'profile': profile,
-            'user': user,
-            'form': form
-        }
-    )
