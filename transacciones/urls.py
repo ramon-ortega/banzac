@@ -21,7 +21,7 @@ urlpatterns = [
 
     path(
         route = 'transacciones/retiro/',
-        view = views.retiro,
+        view = views.RetiroView.as_view(),
         name="retiro"
         ),
 

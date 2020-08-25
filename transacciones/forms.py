@@ -17,3 +17,4 @@ class RetiroForm(forms.Form):
     """Retiro Form."""
 
     retiro = forms.FloatField(min_value = 1, max_value=8000);
+
